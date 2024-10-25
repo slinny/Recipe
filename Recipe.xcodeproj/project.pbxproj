@@ -32,8 +32,8 @@
 		93A133052CCC0E6900F8B085 = {
 			isa = PBXGroup;
 			children = (
-				93A133102CCC0E6900F8B085 /* Recipe */,
 				93A1330F2CCC0E6900F8B085 /* Products */,
+				93A133102CCC0E6900F8B085 /* Recipe */,
 			);
 			sourceTree = "<group>";
 		};
