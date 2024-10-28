@@ -8,5 +8,5 @@
 import Foundation
 
 protocol NetworkSession {
-    func fetchData(from urlString: String, completion: @escaping (Result<Data, APIError>) -> Void)
+    func fetchData(from urlString: String) async throws -> Data
 }

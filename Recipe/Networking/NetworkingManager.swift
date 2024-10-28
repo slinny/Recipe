@@ -14,33 +14,26 @@ class URLSessionManager: NetworkSession {
         self.session = session
     }
     
-    func fetchData(from urlString: String, completion: @escaping (Result<Data, APIError>) -> Void) {
+    func fetchData(from urlString: String) async throws -> Data {
         guard let url = URL(string: urlString) else {
-            completion(.failure(.invalidURL))
-            return
+            throw APIError.invalidURL
         }
         
-        session.dataTask(with: url) { data, response, error in
-            // Handle network error
-            if let error = error {
-                completion(.failure(.networkError(error)))
-                return
-            }
+        do {
+            let (data, response) = try await session.data(for: URLRequest(url: url))
             
             // Validate HTTP response
             guard let httpResponse = response as? HTTPURLResponse, (200...299).contains(httpResponse.statusCode) else {
-                completion(.failure(.invalidResponse))
-                return
+                throw APIError.invalidResponse
             }
             
-            // Ensure data is not nil
-            guard let data = data else {
-                completion(.failure(.unknownError))
-                return
+            return data
+        } catch {
+            // Handle network error
+            if let urlError = error as? URLError {
+                throw APIError.networkError(urlError)
             }
-            
-            // Success case
-            completion(.success(data))
-        }.resume()
+            throw APIError.unknownError
+        }
     }
 }

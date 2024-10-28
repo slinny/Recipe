@@ -8,13 +8,19 @@
 import Foundation
 
 class RecipeParser {
+    private let decoder: JSONDecoder
+    
+    init(decoder: JSONDecoder = JSONDecoder()) {
+        self.decoder = decoder
+    }
+    
     func parseRecipes(from data: Data) -> Result<[Recipe], APIError> {
         do {
-            let recipes = try JSONDecoder().decode([Recipe].self, from: data)
+            let recipes = try decoder.decode([Recipe].self, from: data)
             return .success(recipes)
         } catch {
             print("Decoding error: \(error.localizedDescription)")
-            return .failure(.decodingError)
+            return .failure(.decodingError(error))
         }
     }
 }
