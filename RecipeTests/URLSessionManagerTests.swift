@@ -9,9 +9,23 @@ import XCTest
 @testable import Recipe
 
 class URLSessionManagerTests: XCTestCase {
+    
+    var mockSession: MockURLSessionManager!
+    
+    override func setUp() {
+        super.setUp()
+        // Initialize the mock session before each test
+        mockSession = MockURLSessionManager()
+    }
+    
+    override func tearDown() {
+        // Clean up any resources after each test
+        mockSession = nil
+        super.tearDown()
+    }
+    
     func testFetchDataSuccess() async throws {
         // Arrange
-        let mockSession = MockURLSessionManager()
         mockSession.data = "Test Data".data(using: .utf8)
         mockSession.response = HTTPURLResponse(url: URL(string: "https://example.com")!,
                                                statusCode: 200,
@@ -27,7 +41,6 @@ class URLSessionManagerTests: XCTestCase {
     
     func testFetchDataInvalidResponse() async {
         // Arrange
-        let mockSession = MockURLSessionManager()
         mockSession.response = HTTPURLResponse(url: URL(string: "https://example.com")!,
                                                statusCode: 404,
                                                httpVersion: nil,
@@ -50,7 +63,6 @@ class URLSessionManagerTests: XCTestCase {
     
     func testFetchDataNetworkError() async {
         // Arrange
-        let mockSession = MockURLSessionManager()
         let expectedURLError = URLError(.notConnectedToInternet)
         mockSession.error = expectedURLError
         
