@@ -10,12 +10,12 @@ import XCTest
 
 class URLSessionManagerTests: XCTestCase {
     
-    var mockSession: MockURLSessionManager!
+    var mockSession: MockRecipeURLSessionManager!
     
     override func setUp() {
         super.setUp()
         // Initialize the mock session before each test
-        mockSession = MockURLSessionManager()
+        mockSession = MockRecipeURLSessionManager()
     }
     
     override func tearDown() {

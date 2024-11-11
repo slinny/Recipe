@@ -8,7 +8,7 @@
 import Foundation
 @testable import Recipe
 
-class MockURLSessionManager: NetworkSession {
+class MockRecipeURLSessionManager: NetworkSession {
     // Properties to simulate different scenarios
     var data: Data?
     var error: Error?

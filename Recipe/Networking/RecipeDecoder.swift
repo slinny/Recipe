@@ -7,7 +7,7 @@
 
 import Foundation
 
-class RecipeParser {
+class RecipeDecoder: RecipeParser {
     private let decoder: JSONDecoder
     
     init(decoder: JSONDecoder = JSONDecoder()) {

@@ -7,7 +7,7 @@
 
 import Foundation
 
-class URLSessionManager: NetworkSession {
+class RecipeURLSessionManager: NetworkSession {
     private var session: URLSession
     
     init(session: URLSession = .shared) {

@@ -8,7 +8,7 @@
 import SDWebImage
 
 /// Singleton manager for handling image caching operations, utilizing SDWebImage for optimized disk and memory caching.
-class RecipeImageCacheManager {
+class RecipeImageCacheManager: ImageCacheManager {
     
     static let shared = RecipeImageCacheManager()
     private let imageCache: SDImageCache
@@ -97,5 +97,3 @@ class RecipeImageCacheManager {
         return Int(imageCache.totalDiskSize())
     }
 }
-
-

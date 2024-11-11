@@ -10,12 +10,12 @@ import XCTest
 
 class RecipeParserTests: XCTestCase {
     
-    var parser: RecipeParser!
+    var parser: RecipeDecoder!
     
     override func setUp() {
         super.setUp()
         // Initialize the real parser
-        parser = RecipeParser()
+        parser = RecipeDecoder()
     }
     
     override func tearDown() {
@@ -26,7 +26,7 @@ class RecipeParserTests: XCTestCase {
 
     func testParseRecipesSuccess() {
         // Arrange: Use valid JSON data from MockDataProvider
-        let data = MockDataProvider.validRecipeJSON
+        let data = MockRecipeDataProvider.validRecipeJSON
         
         // Act: Parse the data using the real parser
         let result = parser.parseRecipes(from: data)
@@ -49,7 +49,7 @@ class RecipeParserTests: XCTestCase {
 
     func testParseRecipesFailure_invalidJSON() {
         // Arrange: Use invalid JSON data from MockDataProvider
-        let data = MockDataProvider.invalidRecipeJSON
+        let data = MockRecipeDataProvider.invalidRecipeJSON
         
         // Act: Parse the data using the real parser
         let result = parser.parseRecipes(from: data)
