@@ -6,6 +6,10 @@
 	objectVersion = 77;
 	objects = {
 
+/* Begin PBXBuildFile section */
+		93F6460C2CE1533E0089C02E /* SDWebImage in Frameworks */ = {isa = PBXBuildFile; productRef = 93F6460B2CE1533E0089C02E /* SDWebImage */; };
+/* End PBXBuildFile section */
+
 /* Begin PBXContainerItemProxy section */
 		93A133472CD05ADF00F8B085 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
@@ -39,6 +43,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				93F6460C2CE1533E0089C02E /* SDWebImage in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -90,6 +95,7 @@
 			);
 			name = Recipe;
 			packageProductDependencies = (
+				93F6460B2CE1533E0089C02E /* SDWebImage */,
 			);
 			productName = Recipe;
 			productReference = 93A1330E2CCC0E6900F8B085 /* Recipe.app */;
@@ -146,6 +152,9 @@
 			);
 			mainGroup = 93A133052CCC0E6900F8B085;
 			minimizedProjectReferenceProxies = 1;
+			packageReferences = (
+				93F6460A2CE1533E0089C02E /* XCRemoteSwiftPackageReference "SDWebImage" */,
+			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = 93A1330F2CCC0E6900F8B085 /* Products */;
 			projectDirPath = "";
@@ -446,6 +455,25 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		93F6460A2CE1533E0089C02E /* XCRemoteSwiftPackageReference "SDWebImage" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/SDWebImage/SDWebImage.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 5.20.0;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		93F6460B2CE1533E0089C02E /* SDWebImage */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 93F6460A2CE1533E0089C02E /* XCRemoteSwiftPackageReference "SDWebImage" */;
+			productName = SDWebImage;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = 93A133062CCC0E6900F8B085 /* Project object */;
 }
