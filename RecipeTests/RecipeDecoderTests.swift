@@ -8,7 +8,7 @@
 import XCTest
 @testable import Recipe
 
-class RecipeParserTests: XCTestCase {
+class RecipeDecoderTests: XCTestCase {
     
     var parser: RecipeDecoder!
     
