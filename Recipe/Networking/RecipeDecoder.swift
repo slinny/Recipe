@@ -14,9 +14,9 @@ class RecipeDecoder: RecipeParser {
         self.decoder = decoder
     }
     
-    func parseRecipes(from data: Data) -> Result<[Recipe], APIError> {
+    func parseRecipes(from data: Data) -> Result<RecipeResponse, APIError> {
         do {
-            let recipes = try decoder.decode([Recipe].self, from: data)
+            let recipes = try decoder.decode(RecipeResponse.self, from: data)
             return .success(recipes)
         } catch {
             print("Decoding error: \(error.localizedDescription)")

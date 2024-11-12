@@ -5,7 +5,7 @@
 //  Created by Siran Li on 11/10/24.
 //
 
-import SDWebImage
+import SDWebImageSwiftUI
 
 /// Singleton manager for handling image caching operations, utilizing SDWebImage for optimized disk and memory caching.
 class RecipeImageCacheManager: ImageCacheManager {

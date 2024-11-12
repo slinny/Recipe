@@ -8,5 +8,5 @@
 import Foundation
 
 protocol RecipeParser {
-    func parseRecipes(from data: Data) -> Result<[Recipe], APIError>
+    func parseRecipes(from data: Data) -> Result<RecipeResponse, APIError>
 }

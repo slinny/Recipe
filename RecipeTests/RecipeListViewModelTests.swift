@@ -42,7 +42,7 @@ class RecipeListViewModelTests: XCTestCase {
         super.tearDown()
     }
     
-    func testFetchRecipes_Success() async throws {
+    func testLoadRecipes_Success() async throws {
         // Arrange
         let expectedRecipes = MockRecipeDataProvider.expectedRecipes
         
@@ -51,14 +51,16 @@ class RecipeListViewModelTests: XCTestCase {
         (mockParser as! MockRecipeDecoder).parseResult = .success(expectedRecipes)
         
         // Act
-        let recipes = try await viewModel.fetchRecipes()
+        await viewModel.loadRecipes()
         
         // Assert
-        XCTAssertEqual(recipes.count, expectedRecipes.count)
-        XCTAssertEqual(recipes.first?.name, expectedRecipes.first?.name)
+        XCTAssertEqual(viewModel.recipes.count, expectedRecipes.recipes.count)
+        XCTAssertEqual(viewModel.recipes.first?.name, expectedRecipes.recipes.first?.name)
+        XCTAssertFalse(viewModel.isLoading)
+        XCTAssertNil(viewModel.errorMessage)
     }
     
-    func testFetchRecipes_Failure_DecodingError() async {
+    func testLoadRecipes_Failure_DecodingError() async {
         // Arrange
         let decodingError = NSError(domain: "decoding", code: 1, userInfo: nil)
         
@@ -71,36 +73,36 @@ class RecipeListViewModelTests: XCTestCase {
         // Assert
         XCTAssertEqual(viewModel.recipes.count, 0)
         XCTAssertFalse(viewModel.isLoading)
-        XCTAssertEqual(viewModel.errorMessage, "Failed to decode data.")
+        XCTAssertEqual(viewModel.errorMessage, "Failed to decode the response. Please try again later.")
     }
     
-    
-    
-    func testFetchRecipes_Failure_NetworkError() async {
+    func testLoadRecipes_Failure_NetworkError() async {
         // Arrange
         let networkError = NSError(domain: "network", code: 2, userInfo: nil)
         
         // Simulate a network error
         (mockURLSessionManager as! MockRecipeURLSessionManager).error = networkError
-        (mockParser as! MockRecipeDecoder).parseResult = .failure(.networkError(networkError))
+        (mockParser as! MockRecipeDecoder).parseResult = .success(MockRecipeDataProvider.expectedRecipes)
         
         // Act
-        _ = try? await viewModel.fetchRecipes()
+        await viewModel.loadRecipes()
         
         // Assert
         XCTAssertEqual(viewModel.recipes.count, 0)
         XCTAssertFalse(viewModel.isLoading)
+        XCTAssertEqual(viewModel.errorMessage, "Network error occurred. Please check your connection.")
     }
     
-    
-    func testFetchRecipes_Failure_UnknownError() async {
+    func testLoadRecipes_Failure_UnknownError() async {
         // Arrange
+        let unknownError = NSError(domain: "unknown", code: 3, userInfo: nil)
+        
         // Simulate an unknown error
-        (mockURLSessionManager as! MockRecipeURLSessionManager).error = APIError.unknownError
+        (mockURLSessionManager as! MockRecipeURLSessionManager).error = unknownError
         (mockParser as! MockRecipeDecoder).parseResult = .failure(.unknownError)
         
         // Act
-        _ = try? await viewModel.fetchRecipes()
+        await viewModel.loadRecipes()
         
         // Assert
         XCTAssertEqual(viewModel.recipes.count, 0)

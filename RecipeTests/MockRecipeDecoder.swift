@@ -10,9 +10,9 @@ import Foundation
 
 // Mock RecipeParser
 class MockRecipeDecoder: RecipeParser {
-    var parseResult: Result<[Recipe], APIError>?
+    var parseResult: Result<RecipeResponse, APIError>?
     
-    func parseRecipes(from data: Data) -> Result<[Recipe], APIError> {
+    func parseRecipes(from data: Data) -> Result<RecipeResponse, APIError> {
         return parseResult ?? .failure(.unknownError)
     }
 }

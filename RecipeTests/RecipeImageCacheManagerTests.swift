@@ -8,7 +8,7 @@
 import Foundation
 @testable import Recipe
 import XCTest
-import SDWebImage
+import SDWebImageSwiftUI
 
 final class RecipeImageCacheManagerTests: XCTestCase {
     

@@ -14,7 +14,7 @@ class RecipeListViewModel: ObservableObject {
     @Published var errorMessage: String?
     
     private let urlSessionManager: NetworkSession
-    private let recipeParser: RecipeParser
+    private let recipeDecoder: RecipeParser
     private let imageCacheManager: ImageCacheManager
     
     init(
@@ -23,43 +23,41 @@ class RecipeListViewModel: ObservableObject {
         imageCacheManager: ImageCacheManager = RecipeImageCacheManager.shared
     ) {
         self.urlSessionManager = urlSessionManager
-        self.recipeParser = recipeParser
+        self.recipeDecoder = recipeParser
         self.imageCacheManager = imageCacheManager
     }
     
+    @MainActor
     func loadRecipes() async {
+        isLoading = true
+        defer {
+            // Ensure loading state is turned off when the function exits
+            isLoading = false
+        }
+        
         do {
-            self.recipes = try await fetchRecipes()
-        } catch let apiError as APIError {
-            self.errorMessage = handleError(apiError)
+            // Fetch recipes asynchronously
+            recipes = try await fetchRecipes()
         } catch {
-            self.errorMessage = handleError(.unknownError)
+            // Handle error gracefully
+            errorMessage = handleError(error)
         }
     }
     
-    func fetchRecipes() async throws -> [Recipe] {
-        self.isLoading = true
-        self.errorMessage = nil
+    private func fetchRecipes() async throws -> [Recipe] {
+        let data = try await fetchRecipeData()
+        let recipeResponse = try parseRecipeData(data)
         
-        defer { self.isLoading = false }
+        // Cache images asynchronously in the background
+        await cacheImagesForRecipes(recipeResponse.recipes)
         
-        do {
-            let data = try await fetchRecipeData()
-            let recipes = try parseRecipeData(data)
-            await cacheImagesForRecipes(recipes)
-            return recipes
-        } catch let error as APIError {
-            throw error // Throw specific APIError for testing
-        } catch {
-            throw APIError.unknownError // Catch-all error as APIError
-        }
+        return recipeResponse.recipes
     }
     
-    func fetchRecipeData() async throws -> Data {
+    private func fetchRecipeData() async throws -> Data {
         guard let url = URL(string: URLConstants.urlString.rawValue) else {
             throw APIError.invalidURL
         }
-        
         do {
             return try await urlSessionManager.fetchData(from: url.absoluteString)
         } catch {
@@ -67,12 +65,12 @@ class RecipeListViewModel: ObservableObject {
         }
     }
     
-    func parseRecipeData(_ data: Data) throws -> [Recipe] {
-        let result = recipeParser.parseRecipes(from: data)
+    private func parseRecipeData(_ data: Data) throws -> RecipeResponse {
+        let result = recipeDecoder.parseRecipes(from: data)
         
         switch result {
-            case .success(let recipes):
-                return recipes
+            case .success(let recipeResponse):
+                return recipeResponse
             case .failure(let error):
                 throw APIError.decodingError(error)
         }
@@ -82,8 +80,10 @@ class RecipeListViewModel: ObservableObject {
         await withTaskGroup(of: Void.self) { group in
             for recipe in recipes {
                 group.addTask {
+                    // Async image loading for each recipe
                     async let largeImage = self.imageCacheManager.loadImage(from: recipe.photoURLLarge)
                     async let smallImage = self.imageCacheManager.loadImage(from: recipe.photoURLSmall)
+                    
                     _ = await largeImage
                     _ = await smallImage
                 }
@@ -91,17 +91,16 @@ class RecipeListViewModel: ObservableObject {
         }
     }
     
-    private func handleError(_ apiError: APIError) -> String {
-        switch apiError {
-            case .invalidURL:
+    private func handleError(_ error: Error) -> String {
+        // Map specific errors to user-friendly messages
+        switch error {
+            case APIError.invalidURL:
                 return "Invalid URL provided."
-            case .networkError(_):
-                return "Network error occurred."
-            case .invalidResponse:
-                return "Received an invalid response from the server."
-            case .decodingError(_):
-                return "Failed to decode data."
-            case .unknownError:
+            case APIError.networkError:
+                return "Network error occurred. Please check your connection."
+            case APIError.decodingError:
+                return "Failed to decode the response. Please try again later."
+            default:
                 return "An unexpected error occurred."
         }
     }
