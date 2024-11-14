@@ -119,4 +119,3 @@ final class RecipeImageCacheManagerTests: XCTestCase {
         XCTAssertGreaterThan(updatedCacheSize, initialCacheSize, "Cache size should increase after adding an image")
     }
 }
-

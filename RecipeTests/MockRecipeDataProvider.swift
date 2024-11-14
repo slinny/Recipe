@@ -63,6 +63,22 @@ class MockRecipeDataProvider {
         """
         return jsonString.data(using: .utf8)!
     }
+    
+    // Mock Recipe List to return as the viewModel data
+    static var mockRecipes: [Recipe] {
+        return [
+            Recipe(id: "1", cuisine: "Italian", name: "Spaghetti",
+                   photoURLLarge: "https://example.com/spaghetti_large.jpg",
+                   photoURLSmall: "https://example.com/spaghetti_small.jpg",
+                   sourceURL: "https://example.com/spaghetti_recipe",
+                   youtubeURL: "https://youtube.com/spaghetti_video"),
+            Recipe(id: "2", cuisine: "Japanese", name: "Sushi",
+                   photoURLLarge: "https://example.com/sushi_large.jpg",
+                   photoURLSmall: "https://example.com/sushi_small.jpg",
+                   sourceURL: "https://example.com/sushi_recipe",
+                   youtubeURL: "https://youtube.com/sushi_video")
+        ]
+    }
 }
 
 
