@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		9332A8BB2CE66119002FC3B1 /* ViewInspector in Frameworks */ = {isa = PBXBuildFile; productRef = 9332A8BA2CE66119002FC3B1 /* ViewInspector */; };
 		934313022CE389C300BD9BA5 /* SDWebImageSwiftUI in Frameworks */ = {isa = PBXBuildFile; productRef = 934313012CE389C300BD9BA5 /* SDWebImageSwiftUI */; };
+		93A3B7CA2CE6EA3600AA3685 /* README.md in Sources */ = {isa = PBXBuildFile; fileRef = 93A3B7B92CE6EA3600AA3685 /* README.md */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -24,35 +25,12 @@
 /* Begin PBXFileReference section */
 		93A1330E2CCC0E6900F8B085 /* Recipe.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Recipe.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		93A133432CD05ADF00F8B085 /* RecipeTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = RecipeTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		93A3B7B92CE6EA3600AA3685 /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
 /* End PBXFileReference section */
-
-/* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
-		9332A9322CE6CFC0002FC3B1 /* Exceptions for "Recipe" folder in "Recipe" target */ = {
-			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
-			membershipExceptions = (
-				README.md,
-			);
-			target = 93A1330D2CCC0E6900F8B085 /* Recipe */;
-		};
-/* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
-
-/* Begin PBXFileSystemSynchronizedGroupBuildPhaseMembershipExceptionSet section */
-		9332A9332CE6CFC0002FC3B1 /* Exceptions for "Recipe" folder in "Compile Sources" phase from "Recipe" target */ = {
-			isa = PBXFileSystemSynchronizedGroupBuildPhaseMembershipExceptionSet;
-			buildPhase = 93A1330A2CCC0E6900F8B085 /* Sources */;
-			membershipExceptions = (
-				README.md,
-			);
-		};
-/* End PBXFileSystemSynchronizedGroupBuildPhaseMembershipExceptionSet section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
 		93A133102CCC0E6900F8B085 /* Recipe */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
-			exceptions = (
-				9332A9322CE6CFC0002FC3B1 /* Exceptions for "Recipe" folder in "Recipe" target */,
-				9332A9332CE6CFC0002FC3B1 /* Exceptions for "Recipe" folder in "Compile Sources" phase from "Recipe" target */,
-			);
 			path = Recipe;
 			sourceTree = "<group>";
 		};
@@ -86,6 +64,7 @@
 		93A133052CCC0E6900F8B085 = {
 			isa = PBXGroup;
 			children = (
+				93A3B7B92CE6EA3600AA3685 /* README.md */,
 				93A133102CCC0E6900F8B085 /* Recipe */,
 				93A133442CD05ADF00F8B085 /* RecipeTests */,
 				93A1330F2CCC0E6900F8B085 /* Products */,
@@ -216,6 +195,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				93A3B7CA2CE6EA3600AA3685 /* README.md in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

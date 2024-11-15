@@ -1,11 +1,3 @@
-//
-//  Untitled.swift
-//  Recipe
-//
-//  Created by Siran Li on 11/14/24.
-//
-
-
 # Recipe App
 
 ## Overview
