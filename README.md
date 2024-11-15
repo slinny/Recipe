@@ -60,13 +60,11 @@ The Recipe App is designed to provide users with an organized list of recipes, a
 
 1. **Simplified Recipe Detail View**:
     -   Limited the detail view to essential recipe information (e.g., title, ingredients, and instructions) to provide a streamlined user experience within time constraints. This focused the app on delivering core functionality efficiently.
-2. **SDWebImage over FileManager**:
-    -   Chose SDWebImage for image caching and handling over directly using  `FileManager`. SDWebImage provides built-in optimizations for image downloading, caching, and displaying, which leads to a smoother user experience and better performance, particularly when dealing with remote image resources.
-3. **SDWebImage for Image Caching**:
+2. **SDWebImage for Image Caching**:
     -   Chose SDWebImage for image caching over using `FileManager`. This choice provided built-in optimizations for downloading, caching, and displaying images, leading to better performance, especially with remote image data.
-4. **Mocking for Testing**:
+3. **Mocking for Testing**:
     -   Used mock data and objects to test the `RecipeViewModel` and network layer. This allowed for focused unit tests without dependencies on actual network conditions, making tests more stable and reliable.
-5. **Limited Animation**:
+4. **Limited Animation**:
     -   Decided against complex animations in `RecipeListView` to keep the UI responsive and lightweight, particularly on older devices.
 
 ----------
@@ -80,7 +78,6 @@ The recipe detail view currently has limited interactivity. Features like ingred
 ## External Code and Dependencies
 
 -   **SDWebImage**: Used for image caching to improve performance when loading recipe images.
--   **ViewInspector**: Utilized for testing SwiftUI views to ensure UI components function as expected in unit tests.
 
 ----------
 

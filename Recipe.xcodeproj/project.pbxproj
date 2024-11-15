@@ -7,7 +7,6 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		9332A8BB2CE66119002FC3B1 /* ViewInspector in Frameworks */ = {isa = PBXBuildFile; productRef = 9332A8BA2CE66119002FC3B1 /* ViewInspector */; };
 		934313022CE389C300BD9BA5 /* SDWebImageSwiftUI in Frameworks */ = {isa = PBXBuildFile; productRef = 934313012CE389C300BD9BA5 /* SDWebImageSwiftUI */; };
 		93A3B7CA2CE6EA3600AA3685 /* README.md in Sources */ = {isa = PBXBuildFile; fileRef = 93A3B7B92CE6EA3600AA3685 /* README.md */; };
 /* End PBXBuildFile section */
@@ -54,7 +53,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				9332A8BB2CE66119002FC3B1 /* ViewInspector in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -124,7 +122,6 @@
 			);
 			name = RecipeTests;
 			packageProductDependencies = (
-				9332A8BA2CE66119002FC3B1 /* ViewInspector */,
 			);
 			productName = RecipeTests;
 			productReference = 93A133432CD05ADF00F8B085 /* RecipeTests.xctest */;
@@ -160,7 +157,6 @@
 			minimizedProjectReferenceProxies = 1;
 			packageReferences = (
 				934313002CE389C300BD9BA5 /* XCRemoteSwiftPackageReference "SDWebImageSwiftUI" */,
-				9332A8B92CE660E7002FC3B1 /* XCRemoteSwiftPackageReference "ViewInspector" */,
 			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = 93A1330F2CCC0E6900F8B085 /* Products */;
@@ -465,14 +461,6 @@
 /* End XCConfigurationList section */
 
 /* Begin XCRemoteSwiftPackageReference section */
-		9332A8B92CE660E7002FC3B1 /* XCRemoteSwiftPackageReference "ViewInspector" */ = {
-			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/nalexn/ViewInspector";
-			requirement = {
-				kind = upToNextMajorVersion;
-				minimumVersion = 0.10.0;
-			};
-		};
 		934313002CE389C300BD9BA5 /* XCRemoteSwiftPackageReference "SDWebImageSwiftUI" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/SDWebImage/SDWebImageSwiftUI.git";
@@ -484,11 +472,6 @@
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
-		9332A8BA2CE66119002FC3B1 /* ViewInspector */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = 9332A8B92CE660E7002FC3B1 /* XCRemoteSwiftPackageReference "ViewInspector" */;
-			productName = ViewInspector;
-		};
 		934313012CE389C300BD9BA5 /* SDWebImageSwiftUI */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = 934313002CE389C300BD9BA5 /* XCRemoteSwiftPackageReference "SDWebImageSwiftUI" */;
