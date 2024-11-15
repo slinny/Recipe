@@ -112,7 +112,7 @@ class RecipeListViewModelTests: XCTestCase {
     func testImageCaching() async {
         // Arrange
         let expectedImage = UIImage(systemName: "star")! // Replace with a mock image
-        let mockCacheManager = MockImageCacheManager()
+//        let mockCacheManager = MockImageCacheManager()
         
         // Simulate caching an image for a specific key
         let imageKey = "test_url"
