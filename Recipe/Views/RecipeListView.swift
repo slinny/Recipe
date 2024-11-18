@@ -6,25 +6,42 @@
 //
 
 import SwiftUI
-import SDWebImageSwiftUI
 
 // MARK: - RecipeListView
 struct RecipeListView: View {
-    @StateObject private var viewModel: RecipeListViewModel
     
-    init(viewModel: RecipeListViewModel? = nil) {
-        _viewModel = StateObject(wrappedValue: viewModel ?? RecipeListViewModel())
+    @StateObject private var viewModel: RecipeListViewModel
+    private let urlSessionManager: NetworkSession
+    private let imageMemoryCacheManager: MemoryCache
+    private let imageDiskCacheManager: DiskCache
+    
+    init(
+        viewModel: RecipeListViewModel? = nil,
+        urlSessionManager: NetworkSession,
+        recipeDecoder: RecipeParser,
+        imageMemoryCacheManager: MemoryCache,
+        imageDiskCacheManager: DiskCache
+    ) {
+        _viewModel = StateObject(wrappedValue: viewModel ?? RecipeListViewModel(
+            urlSessionManager: urlSessionManager,
+            recipeDecoder: recipeDecoder
+        ))
+        self.urlSessionManager = urlSessionManager
+        self.imageMemoryCacheManager = imageMemoryCacheManager
+        self.imageDiskCacheManager = imageDiskCacheManager
     }
     
     var body: some View {
         NavigationView {
-            VStack {
+            LazyVStack {
                 ErrorMessageView(errorMessage: viewModel.errorMessage)
                 
-                RecipeList(recipes: viewModel.recipes)
-                    .refreshable {
-                        await viewModel.loadRecipes()
-                    }
+                RecipeList(
+                    viewModel: viewModel,
+                    urlSessionManager: urlSessionManager,
+                    imageMemoryCacheManager: imageMemoryCacheManager,
+                    imageDiskCacheManager: imageDiskCacheManager
+                )
                 
                 if viewModel.isLoading {
                     LoadingIndicator()
@@ -55,13 +72,30 @@ struct ErrorMessageView: View {
     }
 }
 
+// MARK: - LoadingIndicator
+struct LoadingIndicator: View {
+    var body: some View {
+        ProgressView()
+            .progressViewStyle(CircularProgressViewStyle())
+            .scaleEffect(2)
+            .padding()
+    }
+}
+
 // MARK: - RecipeList
 struct RecipeList: View {
-    let recipes: [Recipe]
-    
+    let viewModel: RecipeListViewModel
+    let urlSessionManager: NetworkSession
+    let imageMemoryCacheManager:MemoryCache
+    let imageDiskCacheManager: DiskCache
     var body: some View {
-        List(recipes) { recipe in
-            RecipeRow(recipe: recipe)
+        List(viewModel.recipes) { recipe in
+            RecipeRow(
+                recipe: recipe,
+                urlSessionManager: urlSessionManager,
+                imageMemoryCacheManager: imageMemoryCacheManager,
+                imageDiskCacheManager: imageDiskCacheManager
+            )
         }
         .listStyle(PlainListStyle())
     }
@@ -70,14 +104,20 @@ struct RecipeList: View {
 // MARK: - RecipeRow
 struct RecipeRow: View {
     let recipe: Recipe
+    let urlSessionManager: NetworkSession
+    let imageMemoryCacheManager:MemoryCache
+    let imageDiskCacheManager: DiskCache
     
     var body: some View {
         HStack {
-            WebImage(url: URL(string: recipe.photoURLSmall))
-                .resizable()
-                .scaledToFill()
-                .frame(width: 100, height: 100)
-                .clipped()
+            CachedAsyncImage(
+                url: recipe.photoURLSmall,
+                networkSession: urlSessionManager,
+                imageMemoryCache: imageMemoryCacheManager,
+                imageDiskCache: imageDiskCacheManager
+            )
+            .frame(width: 100, height: 100)
+            .cornerRadius(8)
             
             VStack(alignment: .leading) {
                 Text(recipe.name)
@@ -90,16 +130,11 @@ struct RecipeRow: View {
     }
 }
 
-// MARK: - LoadingIndicator
-struct LoadingIndicator: View {
-    var body: some View {
-        ProgressView()
-            .progressViewStyle(CircularProgressViewStyle())
-            .scaleEffect(2)
-            .padding()
-    }
-}
-
 #Preview {
-    RecipeListView()
+    RecipeListView(
+        urlSessionManager: RecipeURLSessionManager(),
+        recipeDecoder: RecipeDecoder(),
+        imageMemoryCacheManager: ImageMemoryCache(),
+        imageDiskCacheManager: ImageDiskCache()
+    )
 }

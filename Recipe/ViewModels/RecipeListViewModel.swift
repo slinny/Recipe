@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import SwiftUI
 
 class RecipeListViewModel: ObservableObject {
     
@@ -15,31 +16,24 @@ class RecipeListViewModel: ObservableObject {
     
     private let urlSessionManager: NetworkSession
     private let recipeDecoder: RecipeParser
-    private let imageCacheManager: ImageCacheManager
+    
     
     init(
         urlSessionManager: NetworkSession = RecipeURLSessionManager(),
-        recipeParser: RecipeParser = RecipeDecoder(),
-        imageCacheManager: ImageCacheManager = RecipeImageCacheManager.shared
+        recipeDecoder: RecipeParser = RecipeDecoder()
     ) {
         self.urlSessionManager = urlSessionManager
-        self.recipeDecoder = recipeParser
-        self.imageCacheManager = imageCacheManager
+        self.recipeDecoder = recipeDecoder
     }
     
     @MainActor
     func loadRecipes() async {
         isLoading = true
-        defer {
-            // Ensure loading state is turned off when the function exits
-            isLoading = false
-        }
+        defer { isLoading = false }
         
         do {
-            // Fetch recipes asynchronously
             recipes = try await fetchRecipes()
         } catch {
-            // Handle error gracefully
             errorMessage = handleError(error)
         }
     }
@@ -47,22 +41,11 @@ class RecipeListViewModel: ObservableObject {
     private func fetchRecipes() async throws -> [Recipe] {
         let data = try await fetchRecipeData()
         let recipeResponse = try parseRecipeData(data)
-        
-        // Cache images asynchronously in the background
-        await cacheImagesForRecipes(recipeResponse.recipes)
-        
         return recipeResponse.recipes
     }
     
     private func fetchRecipeData() async throws -> Data {
-        guard let url = URL(string: URLConstants.urlString.rawValue) else {
-            throw APIError.invalidURL
-        }
-        do {
-            return try await urlSessionManager.fetchData(from: url.absoluteString)
-        } catch {
-            throw APIError.networkError(error)
-        }
+        try await urlSessionManager.fetchData(from: URLConstants.urlString.rawValue)
     }
     
     private func parseRecipeData(_ data: Data) throws -> RecipeResponse {
@@ -73,21 +56,6 @@ class RecipeListViewModel: ObservableObject {
                 return recipeResponse
             case .failure(let error):
                 throw APIError.decodingError(error)
-        }
-    }
-    
-    private func cacheImagesForRecipes(_ recipes: [Recipe]) async {
-        await withTaskGroup(of: Void.self) { group in
-            for recipe in recipes {
-                group.addTask {
-                    // Async image loading for each recipe
-                    async let largeImage = self.imageCacheManager.loadImage(from: recipe.photoURLLarge)
-                    async let smallImage = self.imageCacheManager.loadImage(from: recipe.photoURLSmall)
-                    
-                    _ = await largeImage
-                    _ = await smallImage
-                }
-            }
         }
     }
     
@@ -105,3 +73,4 @@ class RecipeListViewModel: ObservableObject {
         }
     }
 }
+
