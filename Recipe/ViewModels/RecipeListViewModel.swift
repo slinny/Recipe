@@ -17,7 +17,6 @@ class RecipeListViewModel: ObservableObject {
     private let urlSessionManager: NetworkSession
     private let recipeDecoder: RecipeParser
     
-    
     init(
         urlSessionManager: NetworkSession = RecipeURLSessionManager(),
         recipeDecoder: RecipeParser = RecipeDecoder()
@@ -73,4 +72,3 @@ class RecipeListViewModel: ObservableObject {
         }
     }
 }
-
