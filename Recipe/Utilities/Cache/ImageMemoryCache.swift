@@ -22,12 +22,4 @@ class ImageMemoryCache: MemoryCache {
     func fetch(forKey key: String) -> UIImage? {
         return cache.object(forKey: key as NSString)
     }
-
-    func remove(forKey key: String) {
-        cache.removeObject(forKey: key as NSString)
-    }
-
-    func clear() {
-        cache.removeAllObjects()
-    }
 }

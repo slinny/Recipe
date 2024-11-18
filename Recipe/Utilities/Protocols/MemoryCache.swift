@@ -9,6 +9,4 @@ import SwiftUI
 protocol MemoryCache {
     func cache(_ image: UIImage, forKey key: String)
     func fetch(forKey key: String) -> UIImage?
-    func remove(forKey key: String)
-    func clear()
 }
