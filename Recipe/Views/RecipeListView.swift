@@ -12,28 +12,29 @@ struct RecipeListView: View {
     
     @StateObject private var viewModel: RecipeListViewModel
     private let urlSessionManager: NetworkSession
+    private let recipeDecoder: RecipeParser
     private let imageMemoryCacheManager: MemoryCache
     private let imageDiskCacheManager: DiskCache
     
     init(
-        viewModel: RecipeListViewModel? = nil,
         urlSessionManager: NetworkSession,
         recipeDecoder: RecipeParser,
         imageMemoryCacheManager: MemoryCache,
         imageDiskCacheManager: DiskCache
     ) {
-        _viewModel = StateObject(wrappedValue: viewModel ?? RecipeListViewModel(
+        _viewModel = StateObject(wrappedValue: RecipeListViewModel(
             urlSessionManager: urlSessionManager,
             recipeDecoder: recipeDecoder
         ))
         self.urlSessionManager = urlSessionManager
+        self.recipeDecoder = recipeDecoder
         self.imageMemoryCacheManager = imageMemoryCacheManager
         self.imageDiskCacheManager = imageDiskCacheManager
     }
     
     var body: some View {
         NavigationView {
-            LazyVStack {
+            VStack {
                 ErrorMessageView(errorMessage: viewModel.errorMessage)
                 
                 RecipeList(
