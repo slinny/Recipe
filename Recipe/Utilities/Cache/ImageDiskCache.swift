@@ -5,21 +5,19 @@
 //  Created by Siran Li on 11/17/24.
 //
 
-
 import Foundation
 import SwiftUI
 
 class ImageDiskCache: DiskCache {
     
-    
     private let cacheDirectory: URL
     private let fileManager: FileManager
     private let compressionQuality: CGFloat
     private let storageLimit: Int
-
+    
     init(
         cacheDirectory: URL = FileManager.default.urls(for: .cachesDirectory, in: .userDomainMask).first!,
-        compressionQuality: CGFloat = 0.75,
+        compressionQuality: CGFloat = 1.0,
         storageLimit: Int = 100 * 1024 * 1024 // Default to 100 MB
     ) {
         self.cacheDirectory = cacheDirectory
@@ -28,19 +26,19 @@ class ImageDiskCache: DiskCache {
         self.fileManager = FileManager.default
         setupCacheDirectory()
     }
-
+    
     // MARK: - Public Methods
     func store(_ image: UIImage, forKey key: String) throws {
         guard let data = image.jpegData(compressionQuality: compressionQuality) else {
             throw CacheError.failedToEncodeImage
         }
-
+        
         let filePath = cacheDirectory.appendingPathComponent(key)
         try data.write(to: filePath)
-
+        
         try enforceStorageLimit()
     }
-
+    
     func retrieve(forKey key: String) throws -> UIImage? {
         let filePath = cacheDirectory.appendingPathComponent(key)
         guard fileManager.fileExists(atPath: filePath.path),
@@ -50,7 +48,7 @@ class ImageDiskCache: DiskCache {
         }
         return image
     }
-
+    
     private func setupCacheDirectory() {
         if !fileManager.fileExists(atPath: cacheDirectory.path) {
             try? fileManager.createDirectory(at: cacheDirectory, withIntermediateDirectories: true)
@@ -64,7 +62,7 @@ class ImageDiskCache: DiskCache {
             return total + fileSize
         } ?? 0
     }
-
+    
     func enforceStorageLimit() throws {
         var contents = try fileManager.contentsOfDirectory(at: cacheDirectory, includingPropertiesForKeys: [.contentAccessDateKey, .fileSizeKey])
         
@@ -77,7 +75,7 @@ class ImageDiskCache: DiskCache {
             let rhsDate = (try? rhs.resourceValues(forKeys: [.contentAccessDateKey]).contentAccessDate) ?? Date.distantPast
             return lhsDate < rhsDate
         }
-
+        
         for file in contents {
             guard totalSize > storageLimit else { break }
             let fileSize = (try? file.resourceValues(forKeys: [.fileSizeKey]).fileSize) ?? 0
@@ -85,17 +83,16 @@ class ImageDiskCache: DiskCache {
             totalSize -= fileSize
         }
     }
-
+    
     // MARK: - Error Handling
     enum CacheError: Error, LocalizedError {
         case failedToEncodeImage
-
+        
         var errorDescription: String? {
             switch self {
-            case .failedToEncodeImage:
-                return "Failed to encode image as JPEG."
+                case .failedToEncodeImage:
+                    return "Failed to encode image as JPEG."
             }
         }
     }
 }
-
