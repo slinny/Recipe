@@ -9,6 +9,6 @@ import SwiftUI
 protocol DiskCache {
     func store(_ image: UIImage, forKey key: String) throws
     func retrieve(forKey key: String) throws -> UIImage?
-    func remove(forKey key: String) throws
-    func clear() throws
+    func totalCacheSize() throws -> Int
+    func enforceStorageLimit() throws
 }
