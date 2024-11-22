@@ -33,9 +33,13 @@ struct RecipeListView: View {
     }
     
     var body: some View {
-        NavigationView {
+        NavigationStack {
             VStack {
                 ErrorMessageView(errorMessage: viewModel.errorMessage)
+                
+                if viewModel.isLoading {
+                    LoadingIndicator()
+                }
                 
                 RecipeList(
                     viewModel: viewModel,
@@ -43,19 +47,16 @@ struct RecipeListView: View {
                     imageMemoryCacheManager: imageMemoryCacheManager,
                     imageDiskCacheManager: imageDiskCacheManager
                 )
-                
-                if viewModel.isLoading {
-                    LoadingIndicator()
-                }
             }
             .navigationTitle("Recipes")
-            .onAppear {
-                if viewModel.recipes.isEmpty {
-                    Task {
-                        await viewModel.loadRecipes()
-                    }
+            .refreshable {
+                Task {
+                    await viewModel.loadRecipes()
                 }
             }
+        }
+        .task {
+            await viewModel.loadRecipes()
         }
     }
 }
