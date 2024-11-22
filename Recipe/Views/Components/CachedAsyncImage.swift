@@ -36,18 +36,17 @@ struct CachedAsyncImage: View {
                     .scaleEffect(0.5)
             }
         }
-        .onAppear {
-            Task {
-                image = await loadImage(forKey: url)
-            }
+        .task {
+            image = await loadImage(forKey: url)
         }
     }
     
-    private func loadImage(forKey key: String) async -> UIImage? {
+    private func loadImage(forKey url: String) async -> UIImage? {
+        let key = createKey(from: url)
         if let cachedImage = getImageFromCache(forKey: key) {
             return cachedImage
         } else {
-            return await fetchImage(forKey: key)
+            return await fetchImage(forKey: url)
         }
     }
     
@@ -63,12 +62,12 @@ struct CachedAsyncImage: View {
         }
     }
     
-    private func fetchImage(forKey key: String) async -> UIImage? {
-        guard let imageURL = URL(string: key) else {
-            print("Invalid URL: \(key)")
+    private func fetchImage(forKey url: String) async -> UIImage? {
+        guard let imageURL = URL(string: url) else {
+            print("Invalid URL: \(url)")
             return nil
         }
-        
+        let key = createKey(from: url)
         do {
             let imageData = try await networkSession.fetchData(from: imageURL.absoluteString)
             if let fetchedImage = UIImage(data: imageData) {
@@ -85,5 +84,11 @@ struct CachedAsyncImage: View {
             print("Error fetching image: \(error)")
             return nil
         }
+    }
+    
+    private func createKey(from urlString: String) -> String {
+        let invalidCharacters = "/\\:*?\"<>|."
+        let key = urlString.replacingOccurrences(of: "[\(invalidCharacters)]", with: "#", options: .regularExpression)
+        return key
     }
 }
