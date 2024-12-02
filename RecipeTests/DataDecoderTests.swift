@@ -1,5 +1,5 @@
 //
-//  RecipeParserTests.swift
+//  DataDecoderTests.swift
 //  RecipeTests
 //
 //  Created by Siran Li on 11/10/24.
@@ -8,14 +8,14 @@
 import XCTest
 @testable import Recipe
 
-class RecipeDecoderTests: XCTestCase {
+class DataDecoderTests: XCTestCase {
     
-    var parser: RecipeDecoder!
+    var parser: DataDecoder!
     
     override func setUp() {
         super.setUp()
-        // Initialize the RecipeDecoder instance before each test
-        parser = RecipeDecoder()
+        // Initialize the DataDecoder instance before each test
+        parser = DataDecoder()
     }
     
     override func tearDown() {
@@ -25,12 +25,12 @@ class RecipeDecoderTests: XCTestCase {
     }
     
     // Test case for successful parsing of valid recipe JSON
-    func testParseRecipesSuccess() {
+    func testParseDataSuccess() {
         // Arrange: Use valid JSON data from MockRecipeDataProvider
         let data = MockRecipeDataProvider.validRecipeJSON
         
-        // Act: Attempt to parse the data using RecipeDecoder
-        let result = parser.parseRecipes(from: data)
+        // Act: Attempt to parse the data using DataDecoder
+        let result = parser.parseData(dataType: RecipeResponse.self, from: data)
         
         // Assert: Verify the result contains the correct recipe details
         switch result {
@@ -51,12 +51,12 @@ class RecipeDecoderTests: XCTestCase {
     }
     
     // Test case for parsing failure when given invalid JSON data
-    func testParseRecipesFailure_invalidJSON() {
+    func testParseDataFailure_invalidJSON() {
         // Arrange: Use invalid JSON data from MockRecipeDataProvider
         let data = MockRecipeDataProvider.invalidRecipeJSON
         
-        // Act: Attempt to parse the invalid JSON data using RecipeDecoder
-        let result = parser.parseRecipes(from: data)
+        // Act: Attempt to parse the invalid JSON data using DataDecoder
+        let result = parser.parseData(dataType: RecipeResponse.self, from: data)
         
         // Assert: Ensure the result is a failure and verify the error
         switch result {

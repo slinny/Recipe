@@ -12,22 +12,22 @@ class RecipeListViewModelTests: XCTestCase {
     
     var viewModel: RecipeListViewModel!
     var mockURLSessionManager: MockRecipeURLSessionManager!
-    var mockRecipeDecoder: MockRecipeDecoder!
+    var mockDataDecoder: MockDataDecoder<RecipeResponse>!
     
     override func setUp() {
         super.setUp()
         mockURLSessionManager = MockRecipeURLSessionManager()
-        mockRecipeDecoder = MockRecipeDecoder()
+        mockDataDecoder = MockDataDecoder()
         viewModel = RecipeListViewModel(
             urlSessionManager: mockURLSessionManager,
-            recipeDecoder: mockRecipeDecoder
+            dataDecoder: mockDataDecoder
         )
     }
     
     override func tearDown() {
         viewModel = nil
         mockURLSessionManager = nil
-        mockRecipeDecoder = nil
+        mockDataDecoder = nil
         super.tearDown()
     }
     
@@ -37,7 +37,7 @@ class RecipeListViewModelTests: XCTestCase {
         
         // Configure mocks
         (mockURLSessionManager!).data = MockRecipeDataProvider.validRecipeJSON
-        (mockRecipeDecoder!).parseResult = .success(expectedRecipes)
+        (mockDataDecoder!).parseResult = .success(expectedRecipes)
         
         // Act
         await viewModel.loadRecipes()
@@ -53,7 +53,7 @@ class RecipeListViewModelTests: XCTestCase {
         // Arrange
         let decodingError = NSError(domain: "decoding", code: 1, userInfo: nil)
         
-        (mockRecipeDecoder!).parseResult = .failure(.decodingError(decodingError))
+        (mockDataDecoder!).parseResult = .failure(.decodingError(decodingError))
         (mockURLSessionManager!).data = Data() // Dummy data
         
         // Act
@@ -71,7 +71,7 @@ class RecipeListViewModelTests: XCTestCase {
         
         // Simulate a network error
         (mockURLSessionManager!).error = APIError.networkError(customError)
-        (mockRecipeDecoder!).parseResult = .success(MockRecipeDataProvider.expectedRecipes)
+        (mockDataDecoder!).parseResult  = .success(MockRecipeDataProvider.expectedRecipes)
         
         // Act
         await viewModel.loadRecipes()
@@ -106,7 +106,7 @@ class RecipeListViewModelTests: XCTestCase {
         
         // Simulate an unknown error
         (mockURLSessionManager!).error = unknownError
-        (mockRecipeDecoder!).parseResult = .failure(.unknownError)
+        (mockDataDecoder!).parseResult = .failure(.unknownError)
         
         // Act
         await viewModel.loadRecipes()

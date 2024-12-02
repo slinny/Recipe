@@ -12,22 +12,22 @@ struct RecipeListView: View {
     
     @StateObject private var viewModel: RecipeListViewModel
     private let urlSessionManager: NetworkSession
-    private let recipeDecoder: RecipeParser
+    private let dataDecoder: DataParser
     private let imageMemoryCacheManager: MemoryCache
     private let imageDiskCacheManager: DiskCache
     
     init(
         urlSessionManager: NetworkSession,
-        recipeDecoder: RecipeParser,
+        dataDecoder: DataParser,
         imageMemoryCacheManager: MemoryCache,
         imageDiskCacheManager: DiskCache
     ) {
         _viewModel = StateObject(wrappedValue: RecipeListViewModel(
             urlSessionManager: urlSessionManager,
-            recipeDecoder: recipeDecoder
+            dataDecoder: dataDecoder
         ))
         self.urlSessionManager = urlSessionManager
-        self.recipeDecoder = recipeDecoder
+        self.dataDecoder = dataDecoder
         self.imageMemoryCacheManager = imageMemoryCacheManager
         self.imageDiskCacheManager = imageDiskCacheManager
     }
@@ -135,7 +135,7 @@ struct RecipeRow: View {
 #Preview {
     RecipeListView(
         urlSessionManager: RecipeURLSessionManager(),
-        recipeDecoder: RecipeDecoder(),
+        dataDecoder: DataDecoder(),
         imageMemoryCacheManager: ImageMemoryCache(),
         imageDiskCacheManager: ImageDiskCache()
     )

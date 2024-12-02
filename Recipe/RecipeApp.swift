@@ -10,7 +10,7 @@ import SwiftUI
 @main
 struct RecipeApp: App {
     let urlSessionManager: NetworkSession = RecipeURLSessionManager()
-    let recipeDecoder: RecipeParser = RecipeDecoder()
+    let dataDecoder: DataParser = DataDecoder()
     let imageDiskCache: DiskCache = ImageDiskCache()
     let imageMemoryCache: MemoryCache = ImageMemoryCache()
     
@@ -18,7 +18,7 @@ struct RecipeApp: App {
         WindowGroup {
             RecipeListView(
                 urlSessionManager: urlSessionManager,
-                recipeDecoder: recipeDecoder,
+                dataDecoder: dataDecoder,
                 imageMemoryCacheManager: imageMemoryCache,
                 imageDiskCacheManager: imageDiskCache
             )

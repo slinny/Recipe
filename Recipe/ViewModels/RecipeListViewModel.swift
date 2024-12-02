@@ -15,14 +15,14 @@ class RecipeListViewModel: ObservableObject {
     @Published var errorMessage: String?
     
     private let urlSessionManager: NetworkSession
-    private let recipeDecoder: RecipeParser
+    private let dataDecoder: DataParser
     
     init(
         urlSessionManager: NetworkSession = RecipeURLSessionManager(),
-        recipeDecoder: RecipeParser = RecipeDecoder()
+        dataDecoder: DataParser = DataDecoder()
     ) {
         self.urlSessionManager = urlSessionManager
-        self.recipeDecoder = recipeDecoder
+        self.dataDecoder = dataDecoder
     }
     
     @MainActor
@@ -48,7 +48,7 @@ class RecipeListViewModel: ObservableObject {
     }
     
     private func parseRecipeData(_ data: Data) throws -> RecipeResponse {
-        let result = recipeDecoder.parseRecipes(from: data)
+        let result = dataDecoder.parseData(dataType: RecipeResponse.self, from: data)
         
         switch result {
             case .success(let recipeResponse):
