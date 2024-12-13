@@ -44,18 +44,6 @@ The Recipe App is a SwiftUI-based iOS application that provides users with an or
 
 ----------
 
-## Time Spent
-
--   **Total Time**: Approximately 10 hours.
--   **Time Allocation**:
-    -   **UI Design and SwiftUI Layout**: ~1 hours
-    -   **Architecture and ViewModel**: ~1 hours
-    -   **Data Fetching and Cacheing**: ~2 hours
-    -   **Testing**: ~3 hours
-    -   **Debugging and Fine-Tuning**: ~3 hours
-
-----------
-
 ## Trade-offs and Decisions
 
 1. **Native Dependencies Only**:
@@ -64,12 +52,6 @@ The Recipe App is a SwiftUI-based iOS application that provides users with an or
 2. **Testing Strategy**:
     -   Emphasized unit testing for core functionality
     -   Used mock objects for network testing    
-
-----------
-
-## Weakest Part of the Project
-
-The recipe detail view currently has limited interactivity. Features like ingredient filtering or user ratings were not included to keep the focus on core functionality. These additions would enhance the user experience but were deferred due to time constraints.
 
 ----------
 
