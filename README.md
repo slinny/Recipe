@@ -55,16 +55,6 @@ The Recipe App is a SwiftUI-based iOS application that provides users with an or
 
 ----------
 
-## External Code and Dependencies
-
--   No external dependencies used
-
-----------
-
 ## Additional Information
-
--   **Potential Enhancements**:
-    -   Implementing caching for recipe data and sorting options to improve user experience.
-    -   Adding user authentication for saving personal favorite recipes could be a future enhancement.
 -   **Constraints**:
     -   The project targets iOS 16, so compatibility should be reviewed if running on earlier versions.
