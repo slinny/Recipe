@@ -10,7 +10,7 @@ import XCTest
 
 class DataDecoderTests: XCTestCase {
     
-    var parser: DataDecoder!
+    var parser: DataParser!
     
     override func setUp() {
         super.setUp()
