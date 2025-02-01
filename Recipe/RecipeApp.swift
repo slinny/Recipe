@@ -9,19 +9,12 @@ import SwiftUI
 
 @main
 struct RecipeApp: App {
-    let urlSessionManager: NetworkSession = RecipeURLSessionManager()
-    let dataDecoder: DataParser = DataDecoder()
-    let imageDiskCache: DiskCache = ImageDiskCache()
-    let imageMemoryCache: MemoryCache = ImageMemoryCache()
+    @StateObject private var appDependencies = AppDependencies()
     
     var body: some Scene {
         WindowGroup {
-            RecipeListView(
-                urlSessionManager: urlSessionManager,
-                dataDecoder: dataDecoder,
-                imageMemoryCacheManager: imageMemoryCache,
-                imageDiskCacheManager: imageDiskCache
-            )
+            RecipeListView()
+                .environmentObject(appDependencies)
         }
     }
 }

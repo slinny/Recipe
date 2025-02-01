@@ -1,5 +1,5 @@
 //
-//  ContentView.swift
+//  RecipeListView.swift
 //  Recipe
 //
 //  Created by Siran Li on 10/25/24.
@@ -9,27 +9,11 @@ import SwiftUI
 
 // MARK: - RecipeListView
 struct RecipeListView: View {
-    
+    @EnvironmentObject var appDependencies: AppDependencies
     @StateObject private var viewModel: RecipeListViewModel
-    private let urlSessionManager: NetworkSession
-    private let dataDecoder: DataParser
-    private let imageMemoryCacheManager: MemoryCache
-    private let imageDiskCacheManager: DiskCache
-    
-    init(
-        urlSessionManager: NetworkSession,
-        dataDecoder: DataParser,
-        imageMemoryCacheManager: MemoryCache,
-        imageDiskCacheManager: DiskCache
-    ) {
-        _viewModel = StateObject(wrappedValue: RecipeListViewModel(
-            urlSessionManager: urlSessionManager,
-            dataDecoder: dataDecoder
-        ))
-        self.urlSessionManager = urlSessionManager
-        self.dataDecoder = dataDecoder
-        self.imageMemoryCacheManager = imageMemoryCacheManager
-        self.imageDiskCacheManager = imageDiskCacheManager
+
+    init() {
+        _viewModel = StateObject(wrappedValue: RecipeListViewModel(dependencies: AppDependencies()))
     }
     
     var body: some View {
@@ -39,14 +23,9 @@ struct RecipeListView: View {
                 
                 if viewModel.isLoading {
                     LoadingIndicator()
+                } else {
+                    RecipeList(viewModel: viewModel)
                 }
-                
-                RecipeList(
-                    viewModel: viewModel,
-                    urlSessionManager: urlSessionManager,
-                    imageMemoryCacheManager: imageMemoryCacheManager,
-                    imageDiskCacheManager: imageDiskCacheManager
-                )
             }
             .navigationTitle("Recipes")
             .refreshable {
@@ -86,17 +65,15 @@ struct LoadingIndicator: View {
 
 // MARK: - RecipeList
 struct RecipeList: View {
-    let viewModel: RecipeListViewModel
-    let urlSessionManager: NetworkSession
-    let imageMemoryCacheManager:MemoryCache
-    let imageDiskCacheManager: DiskCache
+    @ObservedObject var viewModel: RecipeListViewModel
+    @EnvironmentObject var appDependencies: AppDependencies
+    
     var body: some View {
         List(viewModel.recipes) { recipe in
             RecipeRow(
                 recipe: recipe,
-                urlSessionManager: urlSessionManager,
-                imageMemoryCacheManager: imageMemoryCacheManager,
-                imageDiskCacheManager: imageDiskCacheManager
+                imageMemoryCacheManager: appDependencies.imageMemoryCache,
+                imageDiskCacheManager: appDependencies.imageDiskCache
             )
         }
         .listStyle(PlainListStyle())
@@ -106,20 +83,14 @@ struct RecipeList: View {
 // MARK: - RecipeRow
 struct RecipeRow: View {
     let recipe: Recipe
-    let urlSessionManager: NetworkSession
-    let imageMemoryCacheManager:MemoryCache
+    let imageMemoryCacheManager: MemoryCache
     let imageDiskCacheManager: DiskCache
-    
+
     var body: some View {
         HStack {
-            CachedAsyncImage(
-                url: recipe.photoURLSmall,
-                networkSession: urlSessionManager,
-                imageMemoryCache: imageMemoryCacheManager,
-                imageDiskCache: imageDiskCacheManager
-            )
-            .frame(width: 100, height: 100)
-            .cornerRadius(8)
+            CachedAsyncImage(url: recipe.photoURLSmall)
+                .frame(width: 100, height: 100)
+                .cornerRadius(8)
             
             VStack(alignment: .leading) {
                 Text(recipe.name)
@@ -133,10 +104,6 @@ struct RecipeRow: View {
 }
 
 #Preview {
-    RecipeListView(
-        urlSessionManager: RecipeURLSessionManager(),
-        dataDecoder: DataDecoder(),
-        imageMemoryCacheManager: ImageMemoryCache(),
-        imageDiskCacheManager: ImageDiskCache()
-    )
+    RecipeListView()
+        .environmentObject(AppDependencies()) // Inject dependencies in preview
 }

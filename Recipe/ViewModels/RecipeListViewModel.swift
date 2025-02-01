@@ -9,20 +9,16 @@ import Foundation
 import SwiftUI
 
 class RecipeListViewModel: ObservableObject {
-    
     @Published var recipes: [Recipe] = []
     @Published var isLoading: Bool = false
     @Published var errorMessage: String?
     
     private let urlSessionManager: NetworkSession
     private let dataDecoder: DataParser
-    
-    init(
-        urlSessionManager: NetworkSession = RecipeURLSessionManager(),
-        dataDecoder: DataParser = DataDecoder()
-    ) {
-        self.urlSessionManager = urlSessionManager
-        self.dataDecoder = dataDecoder
+
+    init(dependencies: AppDependencies) {
+        self.urlSessionManager = dependencies.networkSession
+        self.dataDecoder = DataDecoder()
     }
     
     @MainActor
