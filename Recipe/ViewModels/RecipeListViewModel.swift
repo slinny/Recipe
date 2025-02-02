@@ -14,11 +14,14 @@ class RecipeListViewModel: ObservableObject {
     @Published var errorMessage: String?
     
     private let urlSessionManager: NetworkSession
-    private let dataDecoder: DataParser
+    private let dataDecoder: DataDecoder
 
-    init(dependencies: AppDependencies) {
+    init(
+        dependencies: AppDependencies,
+        dataDecoder: DataDecoder = DataDecoder()
+    ) {
         self.urlSessionManager = dependencies.networkSession
-        self.dataDecoder = DataDecoder()
+        self.dataDecoder = dataDecoder
     }
     
     @MainActor

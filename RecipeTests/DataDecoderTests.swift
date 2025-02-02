@@ -10,17 +10,17 @@ import XCTest
 
 class DataDecoderTests: XCTestCase {
     
-    var parser: DataParser!
+    var decoder: DataDecoder!
     
     override func setUp() {
         super.setUp()
         // Initialize the DataDecoder instance before each test
-        parser = DataDecoder()
+        decoder = DataDecoder()
     }
     
     override func tearDown() {
         // Clean up the parser after each test
-        parser = nil
+        decoder = nil
         super.tearDown()
     }
     
@@ -30,7 +30,7 @@ class DataDecoderTests: XCTestCase {
         let data = MockRecipeDataProvider.validRecipeJSON
         
         // Act: Attempt to parse the data using DataDecoder
-        let result = parser.parseData(dataType: RecipeResponse.self, from: data)
+        let result = decoder.parseData(dataType: RecipeResponse.self, from: data)
         
         // Assert: Verify the result contains the correct recipe details
         switch result {
@@ -56,7 +56,7 @@ class DataDecoderTests: XCTestCase {
         let data = MockRecipeDataProvider.invalidRecipeJSON
         
         // Act: Attempt to parse the invalid JSON data using DataDecoder
-        let result = parser.parseData(dataType: RecipeResponse.self, from: data)
+        let result = decoder.parseData(dataType: RecipeResponse.self, from: data)
         
         // Assert: Ensure the result is a failure and verify the error
         switch result {
