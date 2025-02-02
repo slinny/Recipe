@@ -9,12 +9,11 @@ import SwiftUI
 
 struct CachedAsyncImage: View {
     let url: String
-    @EnvironmentObject private var dependencies: AppDependencies
     @StateObject private var viewModel: CachedAsyncImageViewModel
-
-    init(url: String) {
+    
+    init(url: String, dependencies: AppDependencies) {
         self.url = url
-        _viewModel = StateObject(wrappedValue: CachedAsyncImageViewModel(dependencies: AppDependencies()))
+        _viewModel = StateObject(wrappedValue: CachedAsyncImageViewModel(dependencies: dependencies))
     }
     
     var body: some View {
@@ -33,4 +32,8 @@ struct CachedAsyncImage: View {
             await viewModel.loadImage(from: url)
         }
     }
+}
+
+#Preview {
+    CachedAsyncImage(url: "https://d3jbb8n5wk0qxi.cloudfront.net/photos/b9ab0071-b281-4bee-b361-ec340d405320/small.jpg", dependencies: AppDependencies())
 }

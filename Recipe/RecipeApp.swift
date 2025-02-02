@@ -13,8 +13,7 @@ struct RecipeApp: App {
     
     var body: some Scene {
         WindowGroup {
-            RecipeListView()
-                .environmentObject(appDependencies)
+            RecipeListView(dependencies: appDependencies)
         }
     }
 }

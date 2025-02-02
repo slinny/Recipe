@@ -15,13 +15,10 @@ class RecipeListViewModel: ObservableObject {
     
     private let urlSessionManager: NetworkSession
     private let dataDecoder: DataDecoder
-
-    init(
-        dependencies: AppDependencies,
-        dataDecoder: DataDecoder = DataDecoder()
-    ) {
+    
+    init(dependencies: AppDependencies) {
         self.urlSessionManager = dependencies.networkSession
-        self.dataDecoder = dataDecoder
+        self.dataDecoder = dependencies.dataDecoder
     }
     
     @MainActor
